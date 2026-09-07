@@ -5,7 +5,8 @@ Accept: application/json
 
 ###
 ### New Request
-GET http://localhost:5207/api/hotels/3
+# Collection: hotels
+GET http://localhost:5207/api/hotels/
 : 
 : 
 Content-Type: application/json
@@ -16,3 +17,26 @@ Content-Type: application/json
     "address": "Address CD",
     "rating": 4.0
   }
+### New Request
+# Collection: countries
+POST http://localhost:5207/api/country
+Content-Type: application/json
+: 
+: 
+: 
+: 
+
+{
+   "name": "Test 
+}nr
+
+### Get.coun
+# Collection: countries
+GET http://localhost:5207/api/country
+Content-Type: application/json
+: 
+: 
+: 
+: 
+: 
+: 
