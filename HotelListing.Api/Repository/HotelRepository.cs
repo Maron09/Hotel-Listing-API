@@ -25,6 +25,7 @@ namespace HotelListing.Api.Repository
                     h.Name,
                     h.Address,
                     h.Rating,
+                    h.CountryId,
                     h.Country != null ? h.Country.Name : "Unknown"
                 ))
                 .FirstOrDefaultAsync();

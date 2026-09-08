@@ -7,17 +7,17 @@ namespace HotelListing.Api.DTOs.Hotel;
 public class CreateHotelDto
 {
 
-    [StringLength(100)]
+    
     public required string Name { get; set; }
 
-    [MaxLength(500)]
+
     public required string Address { get; set; }
 
-    [Range(1, 5)]
+
     public double Rating { get; set; }
 
     public required int CountryId { get; set; }
 }
 
 public record GetHotelsDto(int Id, string Name, string Address, double Rating, int CountryId);
-public record GetHotelDto(int Id, string Name, string Address, double Rating, string Country);
+public record GetHotelDto(int Id, string Name, string Address, double Rating, int CountryId, string Country);

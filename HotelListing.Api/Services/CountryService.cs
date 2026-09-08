@@ -55,7 +55,7 @@ namespace HotelListing.Api.Services
 
         public async Task UpdateAsync(int id, UpdateCountryDto countryDto)
         {
-            _logger.LogInformation($"Updating country with ID: {id}");
+            _logger.LogInformation("Updating country with ID: {id}", id);
             var country = await _countryRepository.GetAsync(id);
             if (country == null)
                 throw new Exception($"Country with ID {id} not found.");
@@ -68,7 +68,7 @@ namespace HotelListing.Api.Services
 
         public async Task DeleteAsync(int id)
         {
-            _logger.LogInformation($"Deleting country with ID: {id}");
+            _logger.LogInformation("Deleting country with ID: {id}", id);
             var exists = await _countryRepository.ExistsAsync(id);
             if (!exists)
                 throw new Exception($"Country with ID {id} not found.");

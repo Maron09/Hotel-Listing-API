@@ -50,16 +50,13 @@ namespace HotelListing.Api.Services
             };
             await _hotelRepository.AddAsync(hotel);
             return await _hotelRepository.GetHotelWithCountryAsync(hotel.Id)
-                ?? new GetHotelDto(hotel.Id, hotel.Name, hotel.Address, hotel.Rating, "Unknown");
+                ?? new GetHotelDto(hotel.Id, hotel.Name, hotel.Address, hotel.Rating, hotel.CountryId, string.Empty);
         }
 
         public async Task UpdateAsync(int id, UpdateHotelDto hotelDto)
         {
-            _logger.LogInformation($"Updating hotel with ID: {id}");
-            var hotel = await _hotelRepository.GetAsync(id);
-            if (hotel == null)
-                throw new Exception($"Hotel with ID {id} not found.");
-            
+            _logger.LogInformation("Updating hotel with ID: {id}", id);
+            var hotel = await _hotelRepository.GetAsync(id) ?? throw new Exception($"Hotel with ID {id} not found.");
             hotel.Name = hotelDto.Name ?? hotel.Name;
             hotel.Address = hotelDto.Address ?? hotel.Address;
             hotel.Rating = hotelDto.Rating ?? hotel.Rating;
@@ -69,7 +66,7 @@ namespace HotelListing.Api.Services
 
         public async Task DeleteAsync(int id)
         {
-            _logger.LogInformation($"Deleting hotel with ID: {id}");
+            _logger.LogInformation("Deleting hotel with ID: {id}", id);
             var exists = await _hotelRepository.ExistsAsync(id);
             if (!exists)
                 throw new Exception($"Hotel with ID {id} not found.");

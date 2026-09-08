@@ -1,28 +1,27 @@
 using System.ComponentModel.DataAnnotations;
 
 
-namespace HotelListing.Api.DTOs.Hotel;
-
-
-public class CreateCountryDto
+namespace HotelListing.Api.DTOs.Hotel
 {
-    [StringLength(100)]
-    public required string Name { get; set; }
 
-    [MaxLength(3)]
-    public required string ShortName { get; set; }
+    public class CreateCountryDto
+    {
+        public required string Name { get; set; }
+
+        public required string ShortName { get; set; }
+    }
+
+
+    public record GetCountriesDto(
+        int Id,
+        string Name,
+        string ShortName
+    );
+
+    public record GetCountryDto(
+        int Id,
+        string Name,
+        string ShortName,
+        List<GetHotelsDto> Hotels
+    );
 }
-
-
-public record GetCountriesDto(
-    int Id,
-    string Name,
-    string ShortName
-);
-
-public record GetCountryDto(
-    int Id,
-    string Name,
-    string ShortName,
-    List<GetHotelsDto> Hotels
-);

@@ -6,6 +6,10 @@ using HotelListing.Api.Filters;
 using HotelListing.Api.Repository;
 using HotelListing.Api.Services;
 using HotelListing.Api.Core.IRepository;
+using Microsoft.AspNetCore.SignalR;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using HotelListing.Api.Validators;
 
 
 namespace HotelListing.Api.Extensions
@@ -22,6 +26,9 @@ namespace HotelListing.Api.Extensions
             services.AddScoped<IIdempotencyService, IdempotencyService>();
             services.AddScoped<IdempotencyFilter>();
             services.AddScoped<TransactionFilter>();
+
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<CreateCountryValidator>();
 
             return services;
         }
