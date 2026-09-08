@@ -19,5 +19,19 @@ public class CreateHotelDto
     public required int CountryId { get; set; }
 }
 
-public record GetHotelsDto(int Id, string Name, string Address, double Rating, int CountryId);
-public record GetHotelDto(int Id, string Name, string Address, double Rating, int CountryId, string Country);
+public class GetHotelsDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Address { get; set; }
+    public double Rating { get; set; }
+    public int CountryId { get; set; }
+}
+public class GetHotelDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Address { get; set; }
+    public double Rating { get; set; }
+    public string Country { get; set; }
+}

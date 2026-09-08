@@ -18,17 +18,20 @@ namespace HotelListing.Api.Repository
 
         public async Task<GetHotelDto?> GetHotelWithCountryAsync(int id)
         {
-            return await _context.Hotels
-                .Where(h => h.Id == id)
-                .Select(h => new GetHotelDto(
-                    h.Id,
-                    h.Name,
-                    h.Address,
-                    h.Rating,
-                    h.CountryId,
-                    h.Country != null ? h.Country.Name : "Unknown"
-                ))
-                .FirstOrDefaultAsync();
+            var hotel = await _context.Hotels
+                .Include(h => h.Country)
+                .FirstOrDefaultAsync(h => h.Id == id);
+
+            if (hotel == null) return null;
+
+            return new GetHotelDto
+            {
+                Id = hotel.Id,
+                Name = hotel.Name,
+                Address = hotel.Address,
+                Rating = hotel.Rating,
+                Country = hotel.Country != null ? hotel.Country.Name : string.Empty
+            };
         }
     }
 }

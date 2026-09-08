@@ -2,6 +2,7 @@ using HotelListing.Api.Core.IRepository;
 using HotelListing.Api.DTOs.Hotel;
 using HotelListing.Api.Models;
 using HotelListing.Api.Core.IServices;
+using AutoMapper;
 
 
 namespace HotelListing.Api.Services
@@ -10,27 +11,24 @@ namespace HotelListing.Api.Services
     {
         private readonly IHotelRepository _hotelRepository;
         private readonly ILogger<HotelService> _logger;
+        private readonly IMapper _mapper;
 
         public HotelService(
             IHotelRepository hotelRepository,
-            ILogger<HotelService> logger
+            ILogger<HotelService> logger,
+            IMapper mapper
         )
         {
             _hotelRepository = hotelRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<List<GetHotelsDto>> GetAllAsync()
         {
             _logger.LogInformation("Fetching all hotes");
             var hotels = await _hotelRepository.GetAllAsync();
-            return [.. hotels.Select(h => new GetHotelsDto(
-                h.Id,
-                h.Name,
-                h.Address,
-                h.Rating,
-                h.CountryId
-            ))];
+            return _mapper.Map<List<GetHotelsDto>>(hotels);
         }
 
         public async Task<GetHotelDto?> GetAsync(int id)
@@ -41,16 +39,10 @@ namespace HotelListing.Api.Services
         public async Task<GetHotelDto> CreateAsync(CreateHotelDto hotelDto)
         {
             _logger.LogInformation("Creating a new Hotel: {Name}", hotelDto.Name);
-            var hotel = new Hotel
-            {
-                Name = hotelDto.Name,
-                Address = hotelDto.Address,
-                Rating = hotelDto.Rating,
-                CountryId = hotelDto.CountryId
-            };
+            var hotel = _mapper.Map<Hotel>(hotelDto);
             await _hotelRepository.AddAsync(hotel);
             return await _hotelRepository.GetHotelWithCountryAsync(hotel.Id)
-                ?? new GetHotelDto(hotel.Id, hotel.Name, hotel.Address, hotel.Rating, hotel.CountryId, string.Empty);
+                ?? _mapper.Map<GetHotelDto>(hotel);
         }
 
         public async Task UpdateAsync(int id, UpdateHotelDto hotelDto)

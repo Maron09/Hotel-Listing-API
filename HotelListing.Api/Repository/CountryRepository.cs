@@ -15,21 +15,26 @@ namespace HotelListing.Api.Repository
         }
         public async Task<GetCountryDto?> GetCountryWithHotelsAsync(int id)
         {
-            return await _context.Countries
-                .Where(c => c.CountryId == id)
-                .Select(c => new GetCountryDto(
-                    c.CountryId,
-                    c.Name,
-                    c.ShortName,
-                    c.Hotels.Select(h => new GetHotelsDto(
-                        h.Id,
-                        h.Name,
-                        h.Address,
-                        h.Rating,
-                        h.CountryId
-                    )).ToList()
-                ))
-                .FirstOrDefaultAsync();
+            var country = await _context.Countries
+                .Include(c => c.Hotels)
+                .FirstOrDefaultAsync(c => c.CountryId == id);
+            
+            if (country == null) return null;
+
+            return new GetCountryDto
+            {
+                Id = country.CountryId,
+                Name = country.Name,
+                ShortName = country.ShortName,
+                Hotels = [.. country.Hotels.Select(h => new GetHotelsDto
+                {
+                    Id = h.Id,
+                    Name = h.Name,
+                    Address = h.Address,
+                    Rating = h.Rating,
+                    CountryId = h.CountryId
+                })]
+            };
         }
     }
 }

@@ -6,10 +6,11 @@ using HotelListing.Api.Filters;
 using HotelListing.Api.Repository;
 using HotelListing.Api.Services;
 using HotelListing.Api.Core.IRepository;
-using Microsoft.AspNetCore.SignalR;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using HotelListing.Api.Validators;
+using AutoMapper;
+using HotelListing.Api.Configurations;
 
 
 namespace HotelListing.Api.Extensions
@@ -29,6 +30,14 @@ namespace HotelListing.Api.Extensions
 
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<CreateCountryValidator>();
+
+            services.AddAutoMapper(typeof(MapperConfig));
+            // var mapperConfig = new MapperConfiguration(mc =>
+            // {
+            //     mc.AddProfile(new MapperConfig());
+            // });
+            // IMapper mapper = mapperConfig.CreateMapper();
+            // services.AddSingleton(mapper);
 
             return services;
         }
